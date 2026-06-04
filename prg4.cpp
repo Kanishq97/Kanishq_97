@@ -1,28 +1,58 @@
 #include<iostream>
+#include<fstream>
 #include<string>
+#include<iomanip>
 using namespace std;
-
-template <typename T>
-T getMax(T a,T b){
-    return (a > b) ? a : b;
-}
-
-template <typename T,typename U>
-auto add(T a,U b) -> decltype(a + b){
-    return a + b;
-}
 
 int main(int argc, char const *argv[])
 {
-    cout << "Max of 10 and 20: " << getMax(10, 20) << endl;
-    cout << "Max of 3.14 and 2.71: " << getMax(3.14, 2.71) << endl;
-    cout << "Max of 'a' and 'z': " << getMax('a', 'z') << endl;
+    ofstream outFile("students.txt");
 
-    cout << "Max (explicit double): " << getMax<double>(5,7.5) << endl;
+    if (outFile.is_open())
+    {
+        outFile << left << setw(10) << "ID"
+                << setw(20) << "Name" 
+                << setw(10) << "CGPA" << endl;
+        outFile << string(40, '-') << endl;
+        
+        outFile << setw(10) << 101
+                << setw(20) << "Arjun"
+                << setw(10) << fixed << setprecision(2) << 8.75 << endl; 
 
-    cout << "Add int + double: " << add(10, 3.5) << endl;
-    cout << "Add string + string: " << add(to_string(42),to_string(100)) << endl;
+        outFile << setw(10) << 102
+                << setw(20) << "Priya"
+                << setw(10) << fixed << setprecision(2) << 9.20 << endl; 
+
+        outFile.close();
+    }
+
+    ifstream inFile("students.txt");
+    string line;
+
+    if (inFile.is_open())
+    {
+        cout << "=== Student Record ===" << endl;
+        while (getline(inFile, line))
+        {
+            cout << line << endl;
+        }
+        inFile.close();
+    }
+
+    ifstream numFile("numbers.txt");
+    int sum = 0, num;
     
+    ofstream createNum("numbers.txt");
+    createNum << 10 << " " << 20 << " " << 30 << " " << 40 << " " << 50;
+    createNum.close();
+
+    numFile.open("numbers.txt");
+    while (numFile >> num)
+    {
+        sum+=num;
+    }
+    numFile.close();
+
+    cout << "\nSum of numbers: " << sum << endl;
     return 0;
 }
-
